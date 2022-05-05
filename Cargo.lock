@@ -181,6 +181,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "diesel_demo"
+version = "0.1.0"
+dependencies = [
+ "diesel",
+ "rocket",
+ "rocket_sync_db_pools",
+]
+
+[[package]]
 name = "diesel_derives"
 version = "1.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -384,14 +393,6 @@ name = "hashbrown"
 version = "0.11.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ab5ef0d4909ef3724cc8cce6ccc8572c5c817592e9285f5464f8e86f8bd3726e"
-
-[[package]]
-name = "hello-rocket"
-version = "0.1.0"
-dependencies = [
- "rocket",
- "rocket_sync_db_pools",
-]
 
 [[package]]
 name = "hermit-abi"

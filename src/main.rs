@@ -1,6 +1,12 @@
 #[macro_use] extern crate rocket;
+#[macro_use] extern crate rocket_sync_db_pools;
+#[macro_use] extern crate diesel;
 
-use rocket_sync_db_pools::{database, diesel};
+mod schema;
+mod models;
+use diesel::prelude::*;
+
+use self::models::*;
 
 #[database("mysql")]
 struct LogsDbConn(diesel::MysqlConnection);
@@ -19,6 +25,15 @@ fn get_deistillery(id: u32) -> String {
 }
 
 #[get("/distilleries")]
-fn index_deistilleries(conn: LogsDbConn) -> String {
-    String::from("all destilleries")
+async fn index_deistilleries(conn: LogsDbConn) -> String {
+    use schema::posts::dsl::*;
+
+    conn.run(|c| {
+        let result = posts.filter(published.eq(true))
+            .limit(5)
+            .load::<Post>(c)
+            .expect("Error Loading");
+        println!("result is {:#?}", result);
+        String::from("all destilleries")
+    }).await
 }
