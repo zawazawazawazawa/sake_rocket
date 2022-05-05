@@ -1,4 +1,4 @@
-#[derive(diesel::Queryable)]
+#[derive(Queryable)]
 #[derive(Debug)]
 pub struct Post {
     pub id: i32,

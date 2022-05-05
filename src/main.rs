@@ -4,9 +4,9 @@
 
 mod schema;
 mod models;
-use diesel::prelude::*;
 
-use self::models::*;
+use diesel::prelude::*;
+use self::models::Post;
 
 #[database("mysql")]
 struct LogsDbConn(diesel::MysqlConnection);
