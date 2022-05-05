@@ -1,6 +1,7 @@
 #[macro_use] extern crate rocket;
 #[macro_use] extern crate rocket_sync_db_pools;
 #[macro_use] extern crate diesel;
+use rocket::serde::json::Json;
 
 mod schema;
 mod models;
@@ -25,7 +26,7 @@ fn get_deistillery(id: u32) -> String {
 }
 
 #[get("/distilleries")]
-async fn index_deistilleries(conn: LogsDbConn) -> String {
+async fn index_deistilleries(conn: LogsDbConn) -> Json<Vec<Post>> {
     use schema::posts::dsl::*;
 
     conn.run(|c| {
@@ -33,7 +34,7 @@ async fn index_deistilleries(conn: LogsDbConn) -> String {
             .limit(5)
             .load::<Post>(c)
             .expect("Error Loading");
-        println!("result is {:#?}", result);
-        String::from("all destilleries")
+        
+        Json(result)
     }).await
 }
