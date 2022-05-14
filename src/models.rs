@@ -2,9 +2,12 @@ use rocket::serde::Serialize;
 
 #[derive(Queryable, Serialize)]
 #[serde(crate = "rocket::serde")]
-pub struct Post {
+pub struct Distillery {
     pub id: i32,
-    pub title: String,
-    pub body: String,
-    pub published: bool,
+    pub whisky_type: String,
+    pub region: Option<String>,
+    pub name: String,
+    pub name_ja: String,
+    pub owner: String,
+    pub owner_ja: String,
 }

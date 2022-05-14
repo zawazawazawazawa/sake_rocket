@@ -7,7 +7,8 @@ mod schema;
 mod models;
 
 use diesel::prelude::*;
-use self::models::Post;
+
+use self::models::Distillery;
 
 #[database("mysql")]
 struct LogsDbConn(diesel::MysqlConnection);
@@ -15,24 +16,23 @@ struct LogsDbConn(diesel::MysqlConnection);
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .mount("/", routes![index_deistilleries, get_deistillery])
+        .mount("/", routes![index_diistilleries])
         .attach(LogsDbConn::fairing())
 }
 
-#[get("/distilleries/<id>")]
-fn get_deistillery(id: u32) -> String {
-    println!("{}", id);
-    String::from("a destillery")
-}
+// #[get("/distilleries/<id>")]
+// fn get_diistillery(id: u32) -> String {
+//     println!("{}", id);
+//     String::from("a distillery")
+// }
 
 #[get("/distilleries")]
-async fn index_deistilleries(conn: LogsDbConn) -> Json<Vec<Post>> {
-    use schema::posts::dsl::*;
+async fn index_diistilleries(conn: LogsDbConn) -> Json<Vec<Distillery>> {
+    use schema::distilleries::dsl::*;
 
     conn.run(|c| {
-        let result = posts.filter(published.eq(true))
-            .limit(5)
-            .load::<Post>(c)
+        let result = distilleries
+            .load::<Distillery>(c)
             .expect("Error Loading");
         
         Json(result)
