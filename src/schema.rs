@@ -1,8 +1,11 @@
 table! {
-    posts (id) {
+    distilleries (id) {
         id -> Integer,
-        title -> Varchar,
-        body -> Text,
-        published -> Bool,
+        whisky_type -> Varchar,
+        region -> Nullable<Varchar>,
+        name -> Varchar,
+        name_ja -> Varchar,
+        owner -> Varchar,
+        owner_ja -> Varchar,
     }
 }
