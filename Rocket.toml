@@ -1,2 +1,2 @@
 [default.databases]
-mysql = { url = "mysql://root:root@127.0.0.1/diesel_demo" }
+mysql = { url = "mysql://root:root@127.0.0.1/sake_rocket" }

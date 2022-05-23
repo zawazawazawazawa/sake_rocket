@@ -16,15 +16,19 @@ struct LogsDbConn(diesel::MysqlConnection);
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .mount("/", routes![index_diistilleries])
+        .mount("/", routes![index_diistilleries, get_diistillery])
         .attach(LogsDbConn::fairing())
 }
 
-// #[get("/distilleries/<id>")]
-// fn get_diistillery(id: u32) -> String {
-//     println!("{}", id);
-//     String::from("a distillery")
-// }
+#[get("/distilleries/<id>")]
+async fn get_diistillery(conn: LogsDbConn, id: u32) -> Json<Distillery> {
+    use schema::distilleries::dsl::*;
+
+    conn.run(|c| {
+        let result = distilleries.find(id).first(c).expect("Error Loading");
+        Json(result)
+    }).await
+}
 
 #[get("/distilleries")]
 async fn index_diistilleries(conn: LogsDbConn) -> Json<Vec<Distillery>> {
