@@ -14,7 +14,9 @@ type Distilleriy = {
 type Distilleries = Array<Distilleriy>
 
 type Props = {
-  props: Distilleries
+  props: {
+    distilleries: Distilleries
+  }
 }
 
 const fetcher = async (url: string): Promise<Distilleries> => {
@@ -32,15 +34,30 @@ export async function getServerSideProps(): Promise<Props> {
 
   return {
     props: {
-      ...data
+      distilleries: data
     },
   };
 }
   
-const Grade3 = (props: Props) => {
+const Grade3 = (props: {distilleries: Distilleries}) => {
+  const distilleries = props.distilleries.map((distillery) =>
+    <>
+      <li>id: {distillery.id}</li>
+      <li>whisky type: {distillery.whisky_type}</li>
+      <li>region: {distillery.region}</li>
+      <li>name: {distillery.name}</li>
+      <li>蒸留所名: {distillery.name_ja}</li>
+      <li>owner: {distillery.owner}</li>
+      <li>オーナー: {distillery.owner_ja}</li>
+      <br />
+    </>
+  )
+
   return (
     <>
       <div>Grade3</div>
+
+      <ul>{distilleries}</ul>
     </>
   )
 }
