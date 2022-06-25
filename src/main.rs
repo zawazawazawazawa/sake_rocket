@@ -7,6 +7,7 @@ mod schema;
 mod models;
 
 use diesel::prelude::*;
+use diesel::insert_into;
 
 use self::models::Distillery;
 
@@ -16,7 +17,7 @@ struct LogsDbConn(diesel::MysqlConnection);
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .mount("/", routes![index_diistilleries, get_diistillery])
+        .mount("/", routes![index_diistilleries, get_diistillery, create_distillery])
         .attach(LogsDbConn::fairing())
 }
 
@@ -41,4 +42,26 @@ async fn index_diistilleries(conn: LogsDbConn) -> Json<Vec<Distillery>> {
         
         Json(result)
     }).await
+}
+
+#[post("/distilleries")]
+async fn create_distillery(conn: LogsDbConn) -> Json<usize> {
+    use schema::distilleries::dsl::*;
+
+    conn.run(|c| {
+        let result = insert_into(distilleries).values(
+            (whisky_type.eq("Scotch"),
+            region.eq("test"),
+            name.eq("test distillery"),
+            name_ja.eq("テスト蒸留所"),
+            owner.eq("test owner"),
+            owner_ja.eq("テストオーナー"))
+        ).execute(c)
+        .expect("Failed");
+
+        println!("result is {:?}", result);
+
+        Json(result)
+    }).await
+
 }
